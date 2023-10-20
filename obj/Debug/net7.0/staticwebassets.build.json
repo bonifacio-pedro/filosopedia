@@ -1,0 +1,11 @@
+{
+  "Version": 1,
+  "Hash": "7uJoWKQc7SniVlcMUx/brdfc6WpNdHPUKxaxwgfHKnU=",
+  "Source": "FIlosoPediaWeb.Api",
+  "BasePath": "_content/FIlosoPediaWeb.Api",
+  "Mode": "Default",
+  "ManifestType": "Build",
+  "ReferencedProjectsConfiguration": [],
+  "DiscoveryPatterns": [],
+  "Assets": []
+}
