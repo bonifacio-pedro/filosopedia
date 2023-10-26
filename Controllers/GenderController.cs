@@ -72,18 +72,11 @@ public class GenderController: ControllerBase
 
     [HttpPut("{id:long}")]
     public async Task<ActionResult<GenderDTO>> PutGender([FromRoute] long id, [FromBody] GenderDTO gender) {
-        var genderSearch = await _con.Genders.FindAsync(id);
-        
-        if (genderSearch is null || gender is null) return BadRequest();
-        
-        if (gender.GenderId != genderSearch.GenderId) return BadRequest();
+        if (gender.GenderId != id|| gender is null) return BadRequest();
 
-        genderSearch.GenderName = gender.GenderName;
-        genderSearch.Description = gender.Description;
-
-        _con.Genders.Update(genderSearch);
+        _con.Entry(gender).State = EntityState.Modified;
         await _con.SaveChangesAsync();
 
-        return Ok(_mapper.Map<GenderDTO>(genderSearch));
+        return Ok(_mapper.Map<GenderDTO>(gender));
     }   
 }

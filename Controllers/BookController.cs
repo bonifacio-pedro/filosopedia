@@ -52,23 +52,14 @@ public class BookController: ControllerBase
 
     [HttpPut("{id:long}")]
     public async Task<ActionResult<BookDTO>> PutBook([FromRoute] long id, [FromBody] BookDTO book) {
-        var bookFind = await _con.Books.FindAsync(id);
         
         if (book is null ||
-         id != book?.BookId || 
-         bookFind is null) return BadRequest("Não encontramos este livro, por favor verifique o corpo e os parâmetros da requisição");
-        
-        bookFind.Title = book.Title;
-        bookFind.Description = book.Description;
-        bookFind.ImageBookUrl = book.ImageBookUrl;
-        bookFind.Stars = book.Stars;
-        bookFind.GenderId = book.GenderId;
-        bookFind.AuthorId = book.AuthorId;
-
-        _con.Books.Update(bookFind);
+         id != book?.BookId) return BadRequest("Não encontramos este livro, por favor verifique o corpo e os parâmetros da requisição");
+       
+        _con.Entry(book).State = EntityState.Modified;
         await _con.SaveChangesAsync();
 
-        return Ok(_mapper.Map<BookDTO>(bookFind));
+        return Ok(_mapper.Map<BookDTO>(book));
     }
 
     [HttpDelete("{id:long}")]

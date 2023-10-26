@@ -49,7 +49,7 @@ public class AuthorController: ControllerBase
 
         // Verify
         if (await _con.Genders.FindAsync(author!.GenderId) is null) return NotFound("Gênero inexistente");
-
+        
         _con.Authors.Add(author);
         await _con.SaveChangesAsync();
         return Ok(_mapper.Map<AuthorDTO>(author));
@@ -57,17 +57,10 @@ public class AuthorController: ControllerBase
 
     [HttpPut("{id:long}")]
     public async Task<ActionResult<AuthorDTO>> PutAuthor ([FromRoute] long id, [FromBody] Author author) {
-        var authorSearch = await _con.Authors.FindAsync(id);
+        
+        if (id != author.AuthorId || author is null) return BadRequest();
 
-        if (authorSearch is null || author is null) return BadRequest();
-        if (authorSearch.AuthorId != author.AuthorId) return BadRequest();
-
-        authorSearch.Name = author.Name;
-        authorSearch.BirthDay = author.BirthDay;
-        authorSearch.Bio = author.Bio;
-        authorSearch.GenderId = author.GenderId;
-
-        _con.Authors.Update(author);
+        _con.Entry(author).State = EntityState.Modified;
         await _con.SaveChangesAsync();
         
         return Ok(_mapper.Map<AuthorDTO>(author));

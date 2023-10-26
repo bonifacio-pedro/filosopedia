@@ -9,6 +9,8 @@ public class Author
     [Required]
     public string? Name { get; set; }
     [DataType(DataType.Date)]
+    [DisplayFormat(DataFormatString = "{0:dd-MM-yyyy}", ApplyFormatInEditMode = true)]
+    [Required]
     public DateTime BirthDay { get; set; }
     [Required]
     public string? Bio { get; set; }
